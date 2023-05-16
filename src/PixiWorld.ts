@@ -1,8 +1,12 @@
 import * as PIXI from 'pixi.js';
-const sheet = await PIXI.Assets.load('../sprites/new/sprites.json');
-const bitmapFonts: PIXI.Loader = await PIXI.Assets.load(
-  '../sprites/new/font.TTF'
-);
+
+let sheet: any;
+let bitmapFonts: PIXI.Loader;
+
+async function loader() {
+  sheet = await PIXI.Assets.load('../sprites/new/sprites.json');
+  bitmapFonts = await PIXI.Assets.load('../sprites/new/font.TTF');
+}
 
 const font: PIXI.BitmapFont = PIXI.BitmapFont.from('myFont', {
   fontFamily: '04B',
@@ -15,6 +19,8 @@ const font: PIXI.BitmapFont = PIXI.BitmapFont.from('myFont', {
   dropShadowColor: '#000000',
   dropShadowBlur: 1,
 });
+
+loader();
 
 export default class PixiWorld {
   private app: PIXI.Application;
