@@ -14,7 +14,7 @@ export default class Simulation {
   private world: PhysisWorld;
   private sphereArr: IObject[] = [];
   private counter;
-  private interval: NodeJS.Timeout;
+  private interval: number;
   private sphereCounter = 0;
 
   constructor(app: PixiWorld, world: PhysisWorld, counter: number) {
@@ -23,7 +23,7 @@ export default class Simulation {
     this.world = world;
     Simulation.simulationCounter++;
 
-    this.interval = setInterval(() => {
+    this.interval = window.setInterval(() => {
       if (this.sphereCounter >= this.counter) {
         clearInterval(this.interval);
         return;
