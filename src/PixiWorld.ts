@@ -1,45 +1,26 @@
 import * as PIXI from 'pixi.js';
 
-let sheet: any;
-let bitmapFonts: PIXI.Loader;
-
-async function loader() {
-  sheet = await PIXI.Assets.load('../sprites/new/sprites.json');
-  bitmapFonts = await PIXI.Assets.load('../sprites/new/font.TTF');
-}
-
-const font: PIXI.BitmapFont = PIXI.BitmapFont.from('myFont', {
-  fontFamily: '04B',
-  fontSize: 200,
-  fill: 0xffffff,
-  align: 'center',
-  stroke: '#000000',
-  strokeThickness: 0,
-  dropShadow: true,
-  dropShadowColor: '#000000',
-  dropShadowBlur: 1,
-});
-
-loader();
-
 export default class PixiWorld {
   private app: PIXI.Application;
   private texture: string;
   private ballSize: number;
   private title: string;
   private color: number;
+  private sheet;
 
   constructor(
     parent: HTMLCanvasElement,
     texture: string,
     ballSize: number,
     name: string,
-    color: number
+    color: number,
+    sheet: any
   ) {
     this.title = name;
     this.color = color;
     this.texture = texture;
     this.ballSize = ballSize;
+    this.sheet = sheet;
     this.app = new PIXI.Application({
       view: parent,
       resizeTo: parent,
@@ -59,8 +40,8 @@ export default class PixiWorld {
     return this.app;
   }
 
-  public createSphere(size: number): PIXI.Sprite {
-    const sphere = PIXI.Sprite.from(sheet.textures[this.texture]);
+  public async createSphere(size: number): Promise<PIXI.Sprite> {
+    const sphere = PIXI.Sprite.from(this.sheet.textures[this.texture]);
     sphere.scale.set(size * this.ballSize);
     sphere.anchor.set(0.5);
     return sphere;

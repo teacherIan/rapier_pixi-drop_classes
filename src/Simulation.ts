@@ -52,10 +52,10 @@ export default class Simulation {
     });
   }
 
-  public createSphere(x: number, y: number, size: number) {
+  public async createSphere(x: number, y: number, size: number) {
     const sphere = this.app.createSphere(size);
-    this.app.App.stage.addChild(sphere);
+    this.app.App.stage.addChild(await sphere);
     const physicsSphere = this.world.createPhysicsSphere(x, y, size);
-    this.sphereArr.push({ render: sphere, physics: physicsSphere });
+    this.sphereArr.push({ render: await sphere, physics: physicsSphere });
   }
 }
