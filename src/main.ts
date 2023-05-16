@@ -4,7 +4,7 @@ import * as PIXI from 'pixi.js';
 import * as RAPIER from '@dimforge/rapier2d-compat';
 import { PhysisWorld } from './Rapier';
 import Simulation from './Simulation';
-import sheetAssets from '../sprites/new/sprites.json?url';
+
 import bFont from '../sprites/new/font.TTF?url';
 
 let ballSize = 0.06;
@@ -12,7 +12,7 @@ let sheet: any;
 let bitmapFonts: PIXI.Loader;
 
 async function loader() {
-  sheet = await PIXI.Assets.load(sheetAssets);
+  sheet = await PIXI.Assets.load('/sprites.json');
   bitmapFonts = await PIXI.Assets.load(bFont);
 }
 
