@@ -7,6 +7,8 @@ export default class PixiWorld {
   private title: string;
   private color: number;
   private sheet;
+  private counterText: PIXI.BitmapText;
+  private counter: number;
 
   constructor(
     parent: HTMLCanvasElement,
@@ -21,6 +23,7 @@ export default class PixiWorld {
     this.texture = texture;
     this.ballSize = ballSize;
     this.sheet = sheet;
+    this.counter = 0;
     this.app = new PIXI.Application({
       view: parent,
       resizeTo: parent,
@@ -30,27 +33,31 @@ export default class PixiWorld {
       backgroundAlpha: 0.3,
       resolution: Math.min(window.devicePixelRatio, 2),
       autoDensity: true,
+      powerPreference: 'high-performance',
     });
     this.app.stage.sortableChildren = true;
     this.createLeftWall();
+    this.createRightWall();
     this.createTitleText();
-    this.createCounterText();
+    this.counterText = this.createCounterText();
   }
   public get App(): PIXI.Application {
     return this.app;
   }
 
-  public async createSphere(size: number): Promise<PIXI.Sprite> {
+  public createSphere(size: number): PIXI.Sprite {
     const sphere = PIXI.Sprite.from(this.sheet.textures[this.texture]);
     sphere.scale.set(size * this.ballSize);
     sphere.anchor.set(0.5);
     return sphere;
   }
 
-  public async createTitleText() {
+  private async createTitleText() {
+    console.log(PIXI.BitmapFont.available);
+
     const textSprite: PIXI.BitmapText = new PIXI.BitmapText(this.title, {
       fontName: 'myFont',
-      fontSize: 90,
+      fontSize: 120,
       align: 'center',
       tint: this.color,
     });
@@ -68,13 +75,14 @@ export default class PixiWorld {
     this.app.stage.addChild(textSprite);
   }
 
-  public async createCounterText() {
+  private createCounterText() {
     let num = 0;
     const textSprite: PIXI.BitmapText = new PIXI.BitmapText(num.toString(), {
       fontName: 'myFont',
-      fontSize: 90,
+      fontSize: 150,
       align: 'center',
       tint: 0xffffff,
+      // letterSpacing: 50,
     });
 
     textSprite.x = window.innerWidth / 8;
@@ -83,20 +91,11 @@ export default class PixiWorld {
     textSprite.zIndex = 100;
     textSprite.scale.y = 2;
 
-    setInterval(() => {
-      num = num + 1;
-      let text = num.toString();
-      while (text.length < 4) {
-        text = '0' + text;
-      }
-
-      textSprite.text = text;
-    }, 10);
-
     this.app.stage.addChild(textSprite);
+    return textSprite;
   }
 
-  public createLeftWall() {
+  private createLeftWall() {
     const wall = new PIXI.Graphics();
     wall.beginFill(0x000000);
     wall.drawRect(0, 0, 1, window.innerHeight);
@@ -106,7 +105,7 @@ export default class PixiWorld {
     this.app.stage.addChild(wall);
   }
 
-  public createRightWall() {
+  private createRightWall() {
     const wall = new PIXI.Graphics();
     wall.beginFill(0x000000);
     wall.drawRect(0, 0, 1, window.innerHeight);
@@ -114,5 +113,18 @@ export default class PixiWorld {
     wall.x = window.innerWidth / 4;
     wall.y = 0;
     this.app.stage.addChild(wall);
+  }
+
+  public updateCounterText(num: number) {
+    let text = num.toString();
+    while (text.length < 4) {
+      text = '0' + text;
+    }
+
+    this.counterText.text = text;
+  }
+
+  public resize() {
+    this.App.resize();
   }
 }

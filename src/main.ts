@@ -5,31 +5,39 @@ import * as RAPIER from '@dimforge/rapier2d-compat';
 import { PhysisWorld } from './Rapier';
 import Simulation from './Simulation';
 
-import bFont from '../sprites/new/font.TTF?url';
-
 let ballSize = 0.06;
 let sheet: any;
-let bitmapFonts: PIXI.Loader;
+let bitmapFonts: PIXI.BitmapFont;
 
 async function loader() {
-  sheet = await PIXI.Assets.load('/sprites.json');
-  bitmapFonts = await PIXI.Assets.load(bFont);
-}
+  PIXI.Assets.load('../sprites/new/ArcadeClassic.ttf');
 
-const font: PIXI.BitmapFont = PIXI.BitmapFont.from('myFont', {
-  fontFamily: '04B',
-  fontSize: 200,
-  fill: 0xffffff,
-  align: 'center',
-  stroke: '#000000',
-  strokeThickness: 0,
-  dropShadow: true,
-  dropShadowColor: '#000000',
-  dropShadowBlur: 1,
-});
+  console.log(bitmapFonts);
+  sheet = await PIXI.Assets.load('/sprites.json');
+  // bitmapFonts = await PIXI.Assets.load(bFont);
+  // console.log(bitmapFonts);
+}
 
 RAPIER.init().then(() => {
   loader().then(() => {
+    const font: PIXI.BitmapFont = PIXI.BitmapFont.from('myFont', {
+      fontFamily: 'ARCADECLASSIC',
+      fontSize: 200,
+      fill: 0xffffff,
+      align: 'center',
+      stroke: '#000000',
+      strokeThickness: 0,
+      dropShadow: true,
+      dropShadowColor: '#000000',
+      dropShadowBlur: 1,
+      // textBaseline: 'alphabetic',
+      // padding: 20,
+      // whiteSpace: 'pre-line',
+      // wordWrap: true,
+      // wordWrapWidth: 20,
+      // letterSpacing: 50,
+    });
+
     const ruby = new Simulation(
       new pixiWorld(
         document.getElementById('canvasA') as HTMLCanvasElement,
@@ -40,7 +48,7 @@ RAPIER.init().then(() => {
         sheet
       ),
       new PhysisWorld(ballSize),
-      4000
+      1000
     );
 
     const amber = new Simulation(
@@ -53,7 +61,7 @@ RAPIER.init().then(() => {
         sheet
       ),
       new PhysisWorld(ballSize),
-      4000
+      2000
     );
 
     const pearl = new Simulation(
@@ -66,7 +74,7 @@ RAPIER.init().then(() => {
         sheet
       ),
       new PhysisWorld(ballSize),
-      4000
+      2000
     );
 
     const sapphire = new Simulation(
@@ -79,7 +87,7 @@ RAPIER.init().then(() => {
         sheet
       ),
       new PhysisWorld(ballSize),
-      4000
+      1000
     );
   });
 });
