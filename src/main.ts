@@ -26,7 +26,7 @@ RAPIER.init().then(() => {
       fill: 0xffffff,
       align: 'center',
       stroke: '#000000',
-      strokeThickness: 0,
+      strokeThickness: 10,
       dropShadow: true,
       dropShadowColor: '#000000',
       dropShadowBlur: 1,
